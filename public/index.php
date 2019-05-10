@@ -2,22 +2,28 @@
 
 require_once('TimeTravel.php');
 
+$start = new DateTime("1985-12-31");
 
-$travel = new TimeTravel(new DateTime('1985-12-31'), new DateTime());
+$today = new DateTime;
 
-//var_dump($travel);
+$timeTravel = new TimeTravel($start, $today);
 
-echo $travel->getTravelInfo();
+echo $timeTravel->getTravelInfos() . '<br>';
 
-echo '</br>';
+$interval = new DateInterval('PT1000000000S');
 
-echo 'Doc est perdu depuis ' . $travel->findDate(1000000000);
+$interval1 = $timeTravel->findDate($interval)->format(DATETIME::COOKIE);
 
-echo '</br>';
+echo "Le Doc est bloqué en  " . $interval1 . '<br>';
 
-echo (count($travel->backToFutureStepByStep(new DateInterval("P1M1W1D"))));
+$intervalPeriod = new DateInterval('P1M1W1D');
 
+$steps = $timeTravel->backToTheFuturStepByStep($intervalPeriod);
 
+echo '<pre>';
+
+var_dump($steps);
+echo '</pre>';
 
 
 

@@ -3,53 +3,71 @@
 
 
 class TimeTravel
-
 {
-    private $start;
-    private $end;
+    /**
+     * @var DateTime
+     */
 
+    public $start;
 
+    /**
+     * @var DateTime
+     */
 
-    public function __construct(dateTime $start, dateTime $end)
+    public $end;
+
+    /**
+     * Time constructor.
+     * @param $start
+     * @param $end
+     */
+
+    public function __construct(DateTime $start, DateTime $end)
     {
         $this->start = $start;
 
         $this->end = $end;
     }
 
-    public function getTravelInfo()
+    /**
+     * @return string
+     */
+
+    public function getTravelInfos()
     {
-        $difference = $this->start->diff($this->end);
-        return $difference->format("Il y a %Y années, %M mois, %D jours, %h heures, %i minutes et %s secondes entre les deux dates");
+        $interval = $this->start->diff($this->end);
+
+        return $interval->format("Il y a %y années, %m mois, %d jours, %h heures, %m minutes
+         et %s secondes entre les deux dates");
     }
 
-    public function findDate(int $interval)
+    /**
+     * @return DateTime
+     */
+
+    public function findDate($interval) : DateTime
     {
-
-        //$date = new DateTime('1985-12-31');
-        $interval = new DateInterval("PT" . $interval . "S");
-        $this->start->sub($interval);
-        return $this->start->format('Y-m-d H:i:s');
-
-
-
-
+        return $this->start->sub($interval);
     }
 
-    public function backToFutureStepByStep($step) : array
+    /**
+     * @return array
+     */
+
+    public function backToTheFuturStepByStep($step)
     {
+        $steps = [];
 
-        $result = [];
-        $steps = new DatePeriod($this->start, $step, $this->end);
+        $dateRange = new DatePeriod($this->start, $step, $this->end);
 
-        foreach ($steps as $date)
-        {
-            $result[] = $date->format("M,d,Y,A,H");
+        foreach ($dateRange as $date) {
+
+            $steps[] = $date->format("M d Y h:i") ;
         }
-
-        return $result;
-
+        return $steps;
     }
-
 
 }
+
+
+
